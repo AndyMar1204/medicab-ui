@@ -1,0 +1,7 @@
+{
+  "name": "medicab-v2",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
