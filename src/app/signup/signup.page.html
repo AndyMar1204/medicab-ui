@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>signup</ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="spinner.isLoading |async"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="utils.handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <form [formGroup]="accountForm" (ngSubmit)="createAccount()">
+    <ion-list>
+      <ion-item lines="full" fill="">
+        <ion-label position="floating">Nom d'utilisateur</ion-label>
+        <ion-input type="text" placeholder="Nom d'utilisateur" [formControl]="usernameFormControl"></ion-input>
+        <ion-note slot="error" *ngIf="usernameFormControl.hasError('minlength') && usernameFormControl.dirty">
+          Le nom d'utilisateur doit comporter plus de <strong>3 lettres</strong>
+        </ion-note>
+        <ion-note slot="error" *ngIf="usernameFormControl.hasError('required') && usernameFormControl.dirty">
+          Le nom d'utilisateur est <strong>obligatoire</strong>
+        </ion-note>
+      </ion-item>
+      <br>
+      <ion-item lines="full" fill="">
+        <ion-label position="floating">Adresse mail</ion-label>
+        <ion-input type="email" [formControl]="emailFormControl" placeholder="adresse mail"></ion-input>
+        <ion-note slot="helper">Entrer une adresse mail </ion-note>
+
+        <ion-note slot="error" *ngIf="emailFormControl.hasError('email') && emailFormControl.dirty">
+          Votre adresse mail est <strong>invalide</strong>
+        </ion-note>
+        <ion-note slot="error" *ngIf="emailFormControl.hasError('required')  && emailFormControl.dirty">
+          Adresse mail est <strong>obligatoire</strong>
+        </ion-note>
+      </ion-item>
+      <br>
+      <ion-item lines="full" fill="">
+        <ion-label position="floating">Numero de telephone</ion-label>
+        <ion-input type="tel" placeholder="Numero de telephone" [formControl]="phoneFormControl"></ion-input>
+        <ion-note slot="error" *ngIf="phoneFormControl.hasError('pattern')  && phoneFormControl.dirty">
+          Le numero de telephone est <strong>incorrect</strong>
+        </ion-note>
+        <ion-note slot="error" *ngIf="phoneFormControl.hasError('required')  && phoneFormControl.dirty">
+          Le numero de telephone est <strong>obligatoire</strong>
+        </ion-note>
+      </ion-item>
+      <br>
+      <ion-item lines="full" fill="">
+        <ion-label position="floating">Mot de passe</ion-label>
+        <ion-input type="password" placeholder="Entrez votre mot de passe" [formControl]="passwordFormControl">
+
+        </ion-input>
+        <ion-note slot="error" *ngIf="passwordFormControl.hasError('minlength')  && passwordFormControl.dirty">
+          Le mot de passe doit contenir plus de <strong>4 caracteres</strong>
+        </ion-note><br>
+        <ion-note slot="error" *ngIf="passwordFormControl.hasError('required')  && passwordFormControl.dirty">
+          Le mot de passe est obligatoire <strong>obligatoire</strong>
+        </ion-note>
+      </ion-item>
+      <br>
+      <ion-item lines="full" fill="">
+        <ion-label position="floating">Confirmer le mot de passe</ion-label>
+        <ion-input type="password" placeholder="Confirmer votre mot de passe"
+          [formControl]="confirmPasswordFormControl"></ion-input>
+        <ion-note slot="error"
+          *ngIf="confirmPasswordFormControl.hasError('required')  && confirmPasswordFormControl.dirty">
+          Veuillez confirmer votre <strong>mot de passe</strong>
+        </ion-note><br>
+        <ion-note slot="error" *ngIf="!isSame() && confirmPasswordFormControl.dirty">
+          Les mots de passe doivent etre <strong> identiques</strong>
+        </ion-note>
+      </ion-item>
+      <br>
+      <ion-item lines="full" fill="">
+        <ion-checkbox labelPlacement="end" [formControl]="acceptTermsFormControl" checked="false"></ion-checkbox>
+        <ion-label>
+          <span>J'ai lu et accepter les<a class="small" routerLink="/"> termes et conditions</a> d'utilisations</span>
+        </ion-label>
+        <ion-note slot="error" *ngIf="(acceptTermsFormControl.value === 'false')  && acceptTermsFormControl.dirty">
+          <strong>Veuillez accepter les terms d'utilisation pour continuer</strong>
+        </ion-note><br>
+      </ion-item>
+    </ion-list>
+
+    <ion-button type="submit" [disabled]="!isCorrectForm()" expand="block">
+      S'Inscrire
+    </ion-button>
+  </form>
+
+</ion-content>
