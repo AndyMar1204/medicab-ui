@@ -1,14 +1,18 @@
 <ion-content [fullscreen]="true">
   <h2>Continuer en tant que :</h2>
   <ion-card>
-    
-  
     <ion-card-content>
       <ion-button fill="clear" (click)="continueAs(env.user)">Utilisateur</ion-button>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
       <ion-button fill="clear" (click)="continueAs(env.hopital)">Hopital</ion-button>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
       <ion-button fill="clear" (click)="continueAs(env.driver)">Taxi/Moto</ion-button>
     </ion-card-content>
-  
-   
   </ion-card>
 </ion-content>

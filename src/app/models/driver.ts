@@ -1,6 +1,6 @@
 import { Account } from "./account";
 
-export class Taxi  extends Account{
+export class Driver  extends Account{
     
     plaque!: string;
 }

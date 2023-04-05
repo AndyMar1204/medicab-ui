@@ -1,11 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>signup</ion-title>
+    <ion-title>Inscription</ion-title>
     <ion-progress-bar type="indeterminate" *ngIf="spinner.isLoading |async"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-refresher slot="fixed" (ionRefresh)="utils.handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

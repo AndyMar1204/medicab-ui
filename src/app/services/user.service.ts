@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { OutilService } from '../outil.service';
 import { CrudServ } from './crud-serv';
+import { Hopital } from '../models/hopital';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -36,5 +38,8 @@ export class UserService  implements CrudServ<User> {
   }
   delete(id: number): Observable<User> {
     return this.http.delete<User>(this.url_signup+`delete/${id}`)
+  }
+  setUserHopital(id_user:number,hopital:Hopital){
+    return this.http.get<any>(this.url_signup+`setUserHopital/${id_user}/${hopital.id}`)
   }
 }

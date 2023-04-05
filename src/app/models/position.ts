@@ -1,6 +1,6 @@
 export class Position {
-    public longitude!: number
-    public latitude!: number
+    public longitude: number=0
+    public latitude: number=0
     public id!: number
   
     /**

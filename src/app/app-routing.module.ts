@@ -44,6 +44,22 @@ const routes: Routes = [
   {
     path: 'signup',
     loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
+  },
+  {
+    path: 'hospitals',
+    loadChildren: () => import('./hospitals/hospitals.module').then( m => m.HospitalsPageModule)
+  },
+  {
+    path: 'hopital',
+    loadChildren: () => import('./hopital/hopital.module').then( m => m.HopitalPageModule)
+  },
+  {
+    path: 'doctor',
+    loadChildren: () => import('./doctor/doctor.module').then( m => m.DoctorPageModule)
+  },
+  {
+    path: 'transport',
+    loadChildren: () => import('./transport/transport.module').then( m => m.TransportPageModule)
   }
 ];
 @NgModule({

@@ -1,22 +1,31 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { CookieService } from 'ngx-cookie-service';
 import { switchAll } from 'rxjs';
+import { Hopital } from './models/hopital';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OutilService {
-  base_url= "http://localhost:5000/"
-  typeAccount= "typeAccount"
-  user="user"
-  driver="driver"
-  hopital="hopital"
-  telephoneOrEmail="telephoneOrNumber"
-  password="password"
-  id='id'
-  apiKey = 'AIzaSyB6YiXTPsx0Eb2Ez4iLbmPi4XFOkHS_XKU';
-  constructor(private toastController: ToastController) { }
-  getTypeAccount(){
+  base_url = "http://localhost:5000/"
+  typeAccount = "typeAccount"
+  user = "user"
+  driver = "driver"
+  hopital = "hopital"
+  telephoneOrEmail = "telephoneOrNumber"
+  password = "password"
+  id = 'id'
+  apiKey = 'AIzaSyCQ9_nzfMlRjohAaWOYz19nY1Ux40wdzcE';
+  id_user_hopital = 'id_user_hopital'
+  id_user_doctor = 'id_user_doctor'
+  constructor(
+    private toastController: ToastController,
+    private router: Router,
+    private cookiesServices: CookieService
+  ) { }
+  getTypeAccount() {
     let typeAcc = sessionStorage.getItem(this.typeAccount)
     switch (typeAcc) {
       case this.user:
@@ -29,22 +38,88 @@ export class OutilService {
         return null;
     }
   }
-  handleRefresh(event:any) {
+  handleRefresh(event: any) {
     setTimeout(() => {
       // Any calls to load data go here
-      if (event.target!=null) 
+      location.reload()
+      if (event.target != null)
         event.target.complete();
-      
-     
+
+
     }, 2000);
   };
-  async presentToast(position: 'top' | 'middle' | 'bottom', message:string) {
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 1500,
+      duration: 3000,
       position: position
     });
 
     await toast.present();
+  }
+  goToProfil() {
+    this.router.navigate(['/tabs/tab3'])
+  }
+  goToListHospital() {
+    
+    this.router.navigate(['/tabs/hospitals'])
+  }
+
+  goToMyHospital() {
+    let id  = sessionStorage.getItem(this.id_user_hopital)
+    this.router.navigate(['/tabs/hospital/'+id])
+  }
+  goToHospital(hopital:Hopital){
+    let id  = sessionStorage.getItem(this.id_user_hopital)
+    this.router.navigate(['/tabs/hospital/'+hopital.id])
+  }
+  goToMyDoctor() {
+    this.router.navigate(['/tabs/myDoctor'])
+  }
+  goToTransport() {
+    this.router.navigate(['tabs/transport'])
+  }
+  async logOut() {
+    this.cookiesServices.deleteAll()
+    sessionStorage.clear()
+    setTimeout(() => {
+      location.reload()
+    }, 1500);
+  }
+  goToSignup() {
+    this.router.navigate(['/inscription'])
+  }
+  isUser(){
+    if (sessionStorage.getItem(this.typeAccount) == this.user) {
+       
+      return true;
+    }
+    else return false
+  }
+  isHopital(){
+    if (sessionStorage.getItem(this.typeAccount) == this.hopital) {
+       
+      return true;
+    }
+    else return false
+  }
+  isDriver(){
+    if (sessionStorage.getItem(this.typeAccount) == this.driver) {
+       
+      return true;
+    }
+    else return false
+  }
+  userHasHopital(){
+    if (sessionStorage.getItem(this.id_user_hopital)) {
+      return true
+    }
+    return false
+  }
+  userHasDoctor(){
+    if (sessionStorage.getItem(this.id_user_doctor)) {
+      return true
+    }
+    return false
   }
 }

@@ -20,15 +20,34 @@ const routes: Routes = [
         loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
       },
       {
+        path:'hospitals',
+        loadChildren: ()=> import('../hospitals/hospitals.module').then(m=>m.HospitalsPageModule)
+      },
+      {
+        path:'hospital/:id',
+        loadChildren:()=> import('../hopital/hopital.module').then(m=> m.HopitalPageModule)
+      },
+      
+      {
+        path:'myDoctor',
+        loadChildren:()=> import('../doctor/doctor.module').then(m=>m.DoctorPageModule)
+      },
+      {
+        path:'transport',
+        loadChildren:()=>import('../transport/transport.module').then(m=>m.TransportPageModule)
+      }
+ ,
+      {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/tabs/tab2',
         pathMatch: 'full'
       }
     ]
   },
+
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/tab2',
     pathMatch: 'full'
   }
 ];

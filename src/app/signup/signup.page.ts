@@ -9,6 +9,10 @@ import { OutilService } from '../outil.service';
 import { AccountService } from '../services/account.service';
 import { SpinnerService } from '../services/spinner.service';
 import { UserService } from '../services/user.service';
+import { Hopital } from '../models/hopital';
+import { HopitalsService } from '../services/hopitals.service';
+import { Driver } from '../models/driver';
+import { DriverService } from '../services/driver.service';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -24,8 +28,10 @@ export class SignupPage implements OnInit {
     private http: HttpClient,
     private _formBuilder: FormBuilder,
     private userService: UserService,
+    private hopService:HopitalsService,
     public utils: OutilService,
     public spinner: SpinnerService,
+    public driverService:DriverService
   ) { }
   accountForm!: FormGroup
   private phoneRegx = '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'
@@ -34,19 +40,20 @@ export class SignupPage implements OnInit {
   usernameFormControl = new FormControl('', [Validators.required, Validators.minLength(3)])
   passwordFormControl = new FormControl('', [Validators.required, Validators.minLength(4)])
   confirmPasswordFormControl = new FormControl('', [Validators.required])
-  acceptTermsFormControl = new FormControl('',Validators.required)
+  acceptTermsFormControl = new FormControl('', Validators.required)
   phone = ""
   password = ""
   confirm = ''
   stayConnected: boolean = false;
   public account = new Account()
   public confirmPass = ''
+  public hopital = new Hopital()
 
   ngOnInit() {
     this.accountForm = new FormGroup({
       username: this.usernameFormControl,
       email: this.emailFormControl,
-      phone: this.phoneFormControl,
+      number: this.phoneFormControl,
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
     }
@@ -61,48 +68,102 @@ export class SignupPage implements OnInit {
     }
   }
   isCorrectForm() {
-    if (this.emailFormControl.valid && this.phoneFormControl.valid && this.usernameFormControl.valid && this.passwordFormControl.valid && this.confirmPasswordFormControl.valid) {
+    if (this.emailFormControl.valid &&
+      this.phoneFormControl.valid &&
+      this.usernameFormControl.valid &&
+      this.passwordFormControl.valid &&
+      this.confirmPasswordFormControl.valid) {
       return true
     } else
       return false
   }
   createAccount() {
-    console.log(this.isCorrectForm());
-    
+    this.setAccountDetails()
     if (this.isSame()) {
-      if(this.isCorrectForm()){
-      switch (sessionStorage.getItem(this.env.typeAccount)) {
-        case this.env.user:
-          let user = this.account as User
-          user.infos = ""
-          this.userService.save(user).subscribe(
-            dat => {
-              console.log(dat);
-              setTimeout(() => {
-                //this.openSnackBar("Votre inscription a été effectué avec success", "Ok")
-              }, 2000);
-              this.router.navigate(['connexion'])
-            },
-            err => {
-  
-              if (err.status === 0) {
-                this.utils.presentToast('bottom',"Impossible de se connecter au serveur, verifiez votre connection internet et reessayez plus tard")
-              } else
-              this.utils.presentToast('bottom',err.error.erreur)
-                console.log(err);
-            }
-          )
-  
-          break;
-  
-        default:
-          break;
-      }
-    }this.utils.presentToast('bottom','Le formulaire contient des erreurs')
-    }else{
-      this.utils.presentToast('bottom','Les mots de passes doivent etre identiques')
-    }
-   
-  }
+      if (this.isCorrectForm()) {
+        
+        switch (sessionStorage.getItem(this.env.typeAccount)) {
+          case this.env.user:
+            let user = this.account as User
+            user.infos = ""
+            this.userService.save(user).subscribe(
+              dat => {
+                console.log(dat);
+                setTimeout(() => {
+                  this.utils.presentToast('bottom', "Votre inscription a été effectué avec success")
+                }, 2000);
+                this.router.navigate(['connexion'])
+              },
+              err => {
 
+                if (err.status === 0) {
+                  this.utils.presentToast('bottom', "Impossible de se connecter au serveur, verifiez votre connection internet et reessayez plus tard")
+                } else
+                  this.utils.presentToast('bottom', err.error.erreur)
+                console.log(err);
+              }
+            )
+
+            break;
+            case this.env.hopital:
+              let hopital = this.account as Hopital
+              hopital.infos = ''
+              this.hopService.save(hopital).subscribe(
+                dat => {
+                  console.log(dat);
+                  setTimeout(() => {
+                    this.utils.presentToast('bottom', "Votre inscription a été effectué avec success")
+                  }, 2000);
+                  this.router.navigate(['connexion'])
+                },
+                err => {
+  
+                  if (err.status === 0) {
+                    this.utils.presentToast('bottom', "Impossible de se connecter au serveur, verifiez votre connection internet et reessayez plus tard")
+                  } else
+                    this.utils.presentToast('bottom', err.error.erreur)
+                  console.log(err);
+                }
+              )
+  
+              break;
+              case this.env.driver:
+              const driver = this.account as Driver
+              driver.infos = ''
+              this.driverService.save(driver).subscribe(
+                dat => {
+                  console.log(dat);
+                  setTimeout(() => {
+                    this.utils.presentToast('bottom', "Votre inscription a été effectué avec success")
+                  }, 2000);
+                  this.router.navigate(['connexion'])
+                },
+                err => {
+  
+                  if (err.status === 0) {
+                    this.utils.presentToast('bottom', "Impossible de se connecter au serveur, verifiez votre connection internet et reessayez plus tard")
+                  } else
+                    this.utils.presentToast('bottom', err.error.erreur)
+                  console.log(err);
+                }
+              )
+  
+              break;
+
+          default:
+            this.utils.presentToast('middle','Veuillez choisir un type de compte pour continuer!!!!')
+            break;
+        }
+      }
+      else
+        this.utils.presentToast('bottom', 'Le formulaire contient des erreurs')
+    } else {
+      this.utils.presentToast('bottom', 'Les mots de passes doivent etre identiques')
+    }
+  }
+  setAccountDetails(){
+    this.account = this.accountForm.value
+    console.log(this.account);
+    
+  }
 }

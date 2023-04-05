@@ -1,4 +1,5 @@
 import { Account } from "./account";
+import { Hopital } from "./hopital";
 
 export class User extends Account{
     public postnom!: string;
@@ -6,4 +7,5 @@ export class User extends Account{
     public alergies!: string;
     public groupeSanguin!: string;
     public donneurOrganes!: Boolean;
+    public hopital!:Hopital
 }
