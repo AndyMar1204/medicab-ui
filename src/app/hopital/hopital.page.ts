@@ -31,6 +31,9 @@ export class HopitalPage implements OnInit {
       this.hopService.findById(id_).subscribe(
         dat=>{
           this.hopital=dat
+          this.hopService.isOpen(id_).subscribe(
+            dat_=>this.hopital.isOpen=dat_
+          )
         },
         err=>{
           console.log(err);

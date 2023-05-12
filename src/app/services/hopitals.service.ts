@@ -38,4 +38,7 @@ export class HopitalsService implements CrudServ<Hopital>{
   delete(id: number): Observable<Hopital> {
     return this.http.delete<Hopital>(this.url_signup+`delete/${id}`)
   }
+  isOpen(id: number): Observable<boolean> {
+    return this.http.get<boolean>(this.url_signup+`isOpen/${id}`)
+  }
 }

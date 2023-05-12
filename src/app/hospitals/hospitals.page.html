@@ -17,7 +17,7 @@
         <ion-label>Liste des hopitaux</ion-label>
       </ion-item>
 
-      <ion-item (click)="util.goToMyHospital()"  *ngIf="util.isUser()">
+      <ion-item (click)="util.goToMyHospital()" *ngIf="util.isUser()">
         <ion-icon name="person-circle"></ion-icon>
         <ion-label>Mon hopital Hopital de reference</ion-label>
       </ion-item>
@@ -50,44 +50,65 @@
     <ion-refresher slot="fixed" (ionRefresh)="util.handleRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-row>
-      <ion-col>
-        <ion-avatar>
-          <img class="center-horizontal" src="assets/img/sos.png">
-        </ion-avatar>
-      </ion-col>
-    </ion-row>
+  
     <ion-grid>
       <ion-row text-center id="">
         <ion-col *ngFor="let hop of  hospitals">
-          <ion-card  (click)="showUserActionSheet(hop)" *ngIf="util.isUser()">
+          <ion-card (click)="showUserActionSheet(hop)" *ngIf="util.isUser()" class="center">
             <ion-card-header>
               {{hop.username}}
             </ion-card-header>
-            <ion-card-content>
-              <ion-avatar>
-                <img class="center-horizontal" src="assets/img/hopital.gif">
-              </ion-avatar>
+            <ion-card-content class="center">
+              <div>
+                <ion-col class="center"> 
+                  <img class="" height="80" src="assets/img/hopital.gif">  </ion-col>                       
+              </div>
+              <ion-col class="center">
+                <ion-text>Heure d'ouverture : {{hop.heureOuverture}}</ion-text>
+                <br>
+                <ion-text>Heure de fermeture : {{hop.heureFermeture}}</ion-text>
+              </ion-col>
+              <br>
+              <ion-text color="{{hop.isOpen?'primary':'danger'}}"> {{util.isOpen(hop.isOpen)}}</ion-text>
+
             </ion-card-content>
           </ion-card>
-          <ion-card  (click)="showHopitalActionSheet(hop)" *ngIf="util.isHopital()">
+          <ion-card (click)="showHopitalActionSheet(hop)" *ngIf="util.isHopital()" class="center">
             <ion-card-header>
               {{hop.username}}
             </ion-card-header>
-            <ion-card-content>
-              <ion-avatar>
-                <img class="center-horizontal" src="assets/img/hopital.gif">
-              </ion-avatar>
+            <ion-card-content class="center">
+              <div>
+                <ion-col class="center"> 
+                  <img class="" height="80" src="assets/img/hopital.gif">  </ion-col>                       
+              </div>
+              <ion-col class="center">
+                <ion-text>Heure d'ouverture : {{hop.heureOuverture}}</ion-text>
+                <br>
+                <ion-text>Heure de fermeture : {{hop.heureFermeture}}</ion-text>
+              </ion-col>
+              <br>
+              <ion-text color="{{hop.isOpen?'primary':'danger'}}"> {{util.isOpen(hop.isOpen)}}</ion-text>
+
             </ion-card-content>
           </ion-card>
-          <ion-card  (click)="showDriverActionSheet(hop)" *ngIf="util.isDriver()">
+          <ion-card (click)="showDriverActionSheet(hop)" *ngIf="util.isDriver()">
             <ion-card-header>
               {{hop.username}}
             </ion-card-header>
-            <ion-card-content>
-              <ion-avatar>
-                <img class="center-horizontal" src="assets/img/hopital.gif">
-              </ion-avatar>
+            <ion-card-content class="center">
+              <div>
+                <ion-col class="center"> 
+                  <img class="" height="80" src="assets/img/hopital.gif">  </ion-col>                       
+              </div>
+              <ion-col class="center">
+                <ion-text>Heure d'ouverture : {{hop.heureOuverture}}</ion-text>
+                <br>
+                <ion-text>Heure de fermeture : {{hop.heureFermeture}}</ion-text>
+              </ion-col>
+              <br>
+              <ion-text color="{{hop.isOpen?'primary':'danger'}}"> {{util.isOpen(hop.isOpen)}}</ion-text>
+
             </ion-card-content>
           </ion-card>
         </ion-col>

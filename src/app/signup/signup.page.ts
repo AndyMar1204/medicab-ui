@@ -139,7 +139,6 @@ export class SignupPage implements OnInit {
                   this.router.navigate(['connexion'])
                 },
                 err => {
-  
                   if (err.status === 0) {
                     this.utils.presentToast('bottom', "Impossible de se connecter au serveur, verifiez votre connection internet et reessayez plus tard")
                   } else
@@ -147,9 +146,7 @@ export class SignupPage implements OnInit {
                   console.log(err);
                 }
               )
-  
               break;
-
           default:
             this.utils.presentToast('middle','Veuillez choisir un type de compte pour continuer!!!!')
             break;

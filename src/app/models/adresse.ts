@@ -6,5 +6,5 @@ export class Adresse {
     public commune!: string
     public quartier!: string
     public avenue!: string
-
+    public  numero!:number
 }

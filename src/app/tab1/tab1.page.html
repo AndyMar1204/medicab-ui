@@ -51,20 +51,23 @@
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-row>
-      <ion-col>
-        <ion-avatar>
-          <img class="center-horizontal" src="assets/img/sos.png">
+      <ion-col></ion-col>
+      <ion-col sizeMd="" style="text-align: center;">
+        <div></div>
+        <ion-avatar class="center">
+          <img src="assets/img/sos.png">
         </ion-avatar>
       </ion-col>
+      <ion-col></ion-col>
     </ion-row>
     <ion-grid>
       <ion-row text-center id="">
         <ion-col *ngFor="let urg of  listUrgences">
           <ion-card>
-            <ion-card-header>
-              <ion-icon name="globe" size="large" color="danger"></ion-icon>
+            <ion-card-header class="center">
+              <ion-icon name="globe" size="large" color="danger" ></ion-icon>
             </ion-card-header>
-            <ion-card-content>
+            <ion-card-content class="center">
              
               {{urg.replace('_'," ")}}
                </ion-card-content>

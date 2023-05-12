@@ -16,7 +16,7 @@ export class Tab1Page implements  OnInit{
     public  util:OutilService,
     public spinner: SpinnerService) {}
   ngOnInit(): void {
-    "andy"
+    
     this.uServ.getEmergencyList().subscribe(
       dat=>{
         this.listUrgences = dat

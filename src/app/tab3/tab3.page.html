@@ -17,8 +17,8 @@
         <ion-label>Liste des hopitaux</ion-label>
       </ion-item>
 
-      <ion-item (click)="util.goToMyHospital()"  *ngIf="util.isUser()">
-        <ion-icon name="person-circle"></ion-icon>
+      <ion-item (click)="util.goToMyHospital()" *ngIf="util.isUser()">
+        <ion-icon name="business-outline"></ion-icon>
         <ion-label>Mon hopital Hopital de reference</ion-label>
       </ion-item>
       <ion-item (click)="util.goToMyDoctor()" *ngIf="util.isUser()">
@@ -26,7 +26,7 @@
         <ion-label>Mon docteur</ion-label>
       </ion-item>
       <ion-item (click)="util.goToTransport()">
-        <ion-icon name="person-circle"></ion-icon>
+        <ion-icon name="car-outline"></ion-icon>
         <ion-label>Transport Medical</ion-label>
       </ion-item>
     </ion-list>
@@ -46,27 +46,180 @@
       <ion-progress-bar type="indeterminate" *ngIf="spinner.isLoading |async"></ion-progress-bar>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
+  <ion-content fullscreen="true">
+    <ion-refresher slot="fixed" (ionRefresh)="util.handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-grid>
       <ion-row text-center id="info-row">
-        <ion-col>
-          <ion-avatar>
+        <ion-col class="center">
+          <ion-thumbnail class="center">
             <img src="assets/img/_user.gif">
-          </ion-avatar>
+          </ion-thumbnail>
           <h3>{{account.username}}</h3>
           <h4>{{typeAccount}}</h4>
         </ion-col>
       </ion-row>
-      <ion-row text-center id="contact-icons">
-        <ion-col><ion-icon name="call" color="danger"></ion-icon></ion-col>
-        <ion-col><ion-icon name="text" color="danger"></ion-icon></ion-col>
-        <ion-col><ion-icon name="globe" color="danger"></ion-icon></ion-col>
-        <ion-col><ion-icon name="person" color="danger"></ion-icon></ion-col>
-      </ion-row>
-      <h2 text-center>
-        <ion-icon name="globe" color="danger"></ion-icon>
-        Informations
-      </h2>
+    </ion-grid>
+    <h2 class="center">
+      <ion-icon name="list-sharp"></ion-icon>
+      Informations
+    </h2>
+    <ion-grid>
+      <form action="">
+        <ion-list>
+          <div class="center"><span>Informations de mon compte</span></div>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Nom d'utilisateur </ion-label></strong>
+            <ion-input maxlength="50" minlength="3" type="text" required [(ngModel)]="account.username"
+              name="username"></ion-input>
 
-    </ion-grid></ion-content>
+            <div slot="error">Entrer un nom d'utilisateur valid</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Adresse mail: </ion-label></strong>
+            <ion-input maxlength="100" required type="email" [(ngModel)]="account.email" name="email"></ion-input>
+
+            <div slot="error">Veuillez entrer votre adresse mail</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Numero de telephone: </ion-label></strong>
+            <ion-input maxlength="13" type="tel" [(ngModel)]="account.number" name="number"></ion-input>
+            <div slot="helper">Votre numero de telephone</div>
+            <div slot="error">Entrer votre numero de telephone</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Autres Informations: </ion-label></strong>
+            <ion-textarea maxlength="1200" [(ngModel)]="account.infos" name="infos"></ion-textarea>
+            <div slot="helper">Plus d'informations</div>
+            <div slot="error">Veuillez entrez les informations valides</div>
+          </ion-item>
+        </ion-list>
+        <br>
+        <ion-list *ngIf="util.isDriver()">
+          <div class="center"><span>Informations du vehicule</span></div>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Numero de plaque</ion-label></strong>
+            <ion-input maxlength="8" required [(ngModel)]="driver.plaque" name="plaque"></ion-input>
+            <div slot="error">Entrer un numero de plaque</div>
+          </ion-item>
+        </ion-list>
+        <br>
+        <ion-list *ngIf="util.isHopital()">
+          <div class="center"><span>Informations de l'hopital</span></div>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Nom complet</ion-label></strong>
+            <ion-input maxlength="100" [(ngModel)]="hopital.nom" name="nomHopital"></ion-input>
+
+            <div slot="error">Please enter a valid email</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Heure d'ouverture </ion-label></strong>
+            <ion-input maxlength="10" type="time" [(ngModel)]="hopital.heureOuverture"
+              name="heureOuverture"></ion-input>
+
+            <div slot="error">Please enter a valid email</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Heure fermeture</ion-label></strong>
+            <ion-input maxlength="10" type="time" [(ngModel)]="hopital.heureFermeture"
+              name="heureFermeture"></ion-input>
+
+            <div slot="error">Please enter a valid email</div>
+          </ion-item>
+        </ion-list>
+        <br>
+        <ion-list *ngIf="util.isUser()">
+          <div class="center"><span>Informations personnelles</span></div>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Nom complet</ion-label></strong>
+            <ion-input maxlength="100" [(ngModel)]="user.postnom" name="postnom"></ion-input>
+
+            <div slot="error">Entrer un nom valid</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Sexe </ion-label></strong>
+            <ion-select [(ngModel)]="user.sexe" name="sexe">
+              <ion-select-option value="F">Feminin</ion-select-option>
+              <ion-select-option value="M">Masculin</ion-select-option>
+              <ion-select-option value="F">Autres</ion-select-option>
+            </ion-select>
+
+            <div slot="error">Veuillez choisir votre sexe</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Allergiques à </ion-label></strong>
+            <ion-textarea maxlength="1200" [(ngModel)]="user.alergies" name="alergies"></ion-textarea>
+
+            <div slot="error">Please enter a valid email</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Donneur d'organes </ion-label></strong>
+            <ion-select [(ngModel)]="user.donneurOrgane" name="donneurOrgane">
+              <ion-select-option value=true>Oui</ion-select-option>
+              <ion-select-option value=false>Non</ion-select-option>
+              <ion-select-option value="-">Non specifié</ion-select-option>
+            </ion-select>
+            <div slot="error">Données invalides</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Groupes Sanguin </ion-label></strong>
+            <ion-select [(ngModel)]="user.groupeSanguin" name="groupeSanguin">
+              <ion-select-option *ngFor="let group of util.getGroupesSanguins()"
+                value={{group}}>{{group}}</ion-select-option>
+            </ion-select>
+            <div slot="error">Choisir votre groupe sanguin</div>
+          </ion-item>
+        </ion-list>
+        <br>
+        <ion-list>
+          <div class="center"><span>Mon adresse</span></div>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Pays</ion-label></strong>
+            <ion-select [(ngModel)]="account.adresse.pays" name="pays">
+              <ion-select-option *ngFor="let pays of util.getAllCountries()"
+                value={{pays}}>{{pays}}</ion-select-option>
+            </ion-select>
+            <div slot="error">Veuillez choisir votre pays</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Province </ion-label></strong>
+            <ion-input maxlength="1" [(ngModel)]="account.adresse.province" name="province"></ion-input>
+
+            <div slot="error">Please enter a valid email</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Ville / Territoire </ion-label></strong>
+            <ion-input maxlength="100" [(ngModel)]="account.adresse.ville" name="ville"></ion-input>
+
+            <div slot="error">Please enter a valid email</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Commune / District </ion-label></strong>
+            <ion-input maxlength="100" [(ngModel)]="account.adresse.commune" name="commune"></ion-input>
+
+            <div slot="error">Please enter a valid email</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Quartier </ion-label></strong>
+            <ion-input maxlength="100" [(ngModel)]="account.adresse.quartier" name="quartier"></ion-input>
+
+            <div slot="error">Please enter a valid email</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Rue / Avenue </ion-label></strong>
+            <ion-input maxlength="100" [(ngModel)]="account.adresse.avenue" name="avennue"></ion-input>
+
+            <div slot="error">Please enter a valid email</div>
+          </ion-item>
+          <ion-item [counter]="true">
+            <strong><ion-label position="floating"> Numero </ion-label></strong>
+            <ion-input maxlength="100" [(ngModel)]="account.adresse.numero" type="number" name="quartier"></ion-input>
+
+            <div slot="error">Please enter a valid email</div>
+          </ion-item>
+        </ion-list>
+      </form>
+    </ion-grid>
+  </ion-content>
 </div>

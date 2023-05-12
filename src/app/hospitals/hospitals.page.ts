@@ -20,7 +20,7 @@ export class HospitalsPage implements OnInit {
     public spinner: SpinnerService,
     private router: Router,
     public actionSheetController: ActionSheetController,
-    public userService:UserService) { }
+    public userService: UserService) { }
   hospitals: Hopital[] = []
   ngOnInit() {
     this.loadHospitals()
@@ -28,7 +28,15 @@ export class HospitalsPage implements OnInit {
   loadHospitals() {
     this.hospService.findAll().subscribe(
       dat => {
-        this.hospitals = dat
+
+        dat.forEach(hop => {
+          this.hospService.isOpen(hop.id).subscribe(
+            dat_ => {
+              hop.isOpen = dat_
+              this.hospitals.push(hop)
+            }
+          )
+        })
       },
       err => {
         console.log(err);
@@ -41,60 +49,61 @@ export class HospitalsPage implements OnInit {
   }
   goToHopital(hop: Hopital) {
     this.router.navigate(['/tabs/hospital/' + hop.id])
+
   }
   public async showUserActionSheet(hopital: Hopital) {
 
-      const actionSheet = await this.actionSheetController.create({
-        header: `${hopital.username}`,
-        buttons: [
-          // {
-          //   text: 'Effacer',
-          //   role: 'destructive',
-          //   icon: 'trash',
-          //   handler: () => {
-          //     // this.photoService.deletePicture(photo, position);
-          //   }
-          // }
-          {
-            text: 'Definir comme hopital de reference',
-            role: '',
-            icon: 'checkmark-done-circle-outline',
-            handler: () => {
-             const user_id = parseInt(sessionStorage.getItem(this.util.id)!)
-             this.userService.setUserHopital(user_id,hopital).subscribe(
-              dat=>{
-                this.util.presentToast('middle',dat.succes)
-                sessionStorage.setItem(this.util.id_user_hopital,`${hopital.id}`)
+    const actionSheet = await this.actionSheetController.create({
+      header: `${hopital.username}`,
+      buttons: [
+        // {
+        //   text: 'Effacer',
+        //   role: 'destructive',
+        //   icon: 'trash',
+        //   handler: () => {
+        //     // this.photoService.deletePicture(photo, position);
+        //   }
+        // }
+        {
+          text: 'Definir comme hopital de reference',
+          role: '',
+          icon: 'checkmark-done-circle-outline',
+          handler: () => {
+            const user_id = parseInt(sessionStorage.getItem(this.util.id)!)
+            this.userService.setUserHopital(user_id, hopital).subscribe(
+              dat => {
+                this.util.presentToast('middle', dat.succes)
+                sessionStorage.setItem(this.util.id_user_hopital, `${hopital.id}`)
                 this.goToHopital(hopital)
               },
-              err=>{
+              err => {
                 console.log(err)
                 this.util.presentToast('middle', `${err.erreur}`)
               }
-              
-             )
-            }
+
+            )
           }
-          ,
-          {
-            text: 'Voir hopital',
-            role: '',
-            icon: 'eye-outline',
-            handler: () => {
-              this.goToHopital(hopital)
-            }
+        }
+        ,
+        {
+          text: 'Voir hopital',
+          role: '',
+          icon: 'eye-outline',
+          handler: () => {
+            this.goToHopital(hopital)
           }
-          ,
-          {
-            text: 'Annnuler',
-            icon: 'close',
-            role: 'cancel',
-            handler: () => {
-              // Nothing to do, action sheet is automatically closed
-            }
-          }]
-      });
-  
+        }
+        ,
+        {
+          text: 'Annnuler',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            // Nothing to do, action sheet is automatically closed
+          }
+        }]
+    });
+
     await actionSheet.present();
   }
   public async showHopitalActionSheet(hopital: Hopital) {
@@ -115,7 +124,7 @@ export class HospitalsPage implements OnInit {
           role: '',
           icon: 'eye-outline',
           handler: () => {
-           this.util.goToHospital(hopital)
+            this.util.goToHospital(hopital)
           }
         }
         ,
@@ -129,40 +138,40 @@ export class HospitalsPage implements OnInit {
         }]
     });
 
-  await actionSheet.present();
-}
-public async showDriverActionSheet(hopital: Hopital) {
+    await actionSheet.present();
+  }
+  public async showDriverActionSheet(hopital: Hopital) {
 
-  const actionSheet = await this.actionSheetController.create({
-    header: `${hopital.username}`,
-    buttons: [
-      {
-        text: 'Livrer des echantillon',
-        role: '',
-        icon: 'medkit',
-        handler: () => {
-          // this.photoService.deletePicture(photo, position);
+    const actionSheet = await this.actionSheetController.create({
+      header: `${hopital.username}`,
+      buttons: [
+        {
+          text: 'Livrer des echantillon',
+          role: '',
+          icon: 'medkit',
+          handler: () => {
+            // this.photoService.deletePicture(photo, position);
+          }
+        },
+        {
+          text: 'Voir hopital',
+          role: '',
+          icon: 'eye-outline',
+          handler: () => {
+            this.util.goToHospital(hopital)
+          }
         }
-      },
-      {
-        text: 'Voir hopital',
-        role: '',
-        icon: 'eye-outline',
-        handler: () => {
-         this.util.goToHospital(hopital)
-        }
-      }
-      ,
-      {
-        text: 'Annnuler',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          // Nothing to do, action sheet is automatically closed
-        }
-      }]
-  });
+        ,
+        {
+          text: 'Annnuler',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            // Nothing to do, action sheet is automatically closed
+          }
+        }]
+    });
 
-await actionSheet.present();
-}
+    await actionSheet.present();
+  }
 }

@@ -6,6 +6,6 @@ export class User extends Account{
     public sexe!: string;
     public alergies!: string;
     public groupeSanguin!: string;
-    public donneurOrganes!: Boolean;
+    public donneurOrgane!: Boolean;
     public hopital!:Hopital
 }

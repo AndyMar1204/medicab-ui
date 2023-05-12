@@ -4,12 +4,14 @@ import { ToastController } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
 import { switchAll } from 'rxjs';
 import { Hopital } from './models/hopital';
+import { Account } from './models/account';
+import { AccountService } from './services/account.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OutilService {
-  base_url = "http://localhost:5000/"
+  base_url = "http://localhost:8080/"
   typeAccount = "typeAccount"
   user = "user"
   driver = "driver"
@@ -122,4 +124,38 @@ export class OutilService {
     }
     return false
   }
+  // loadUser(){
+  //   let account =  new Account()
+  //   let id_=parseInt(sessionStorage.getItem(this.id)!)
+  //   this.accountService.getAccountById(id_).subscribe(
+  //     dat=>{
+  //       account=dat;
+  //       return account;
+  //     },
+  //     err=>{
+  //       console.log(err);
+        
+  //     }
+  //   )
+  //   return account
+  // }
+ 
+  public isOpen(val:boolean){
+    if (val==true) {
+      return 'Ouvert'
+    }else
+    return 'Fermé'
+   }
+   public getGroupesSanguins(){
+    return ["O+","A-","A+","0-"]
+   }
+   public getAllCountries(){
+    const pays = [
+      'République Democratique du Congo','Rwanda','Republiique Centre Afriquaine','Belgique',
+      'Argentine','Brezil','Cameroun','Dannemark','Italie','France','Germanie','Chine','Japon',
+      'Egypte','Burundi','Angola','Tanzanie','Gabon','Guinée',"Soudan"]
+      
+    return pays;
+   }
 }
+
